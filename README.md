@@ -2,174 +2,235 @@
   <img src="docs/logo_readme.png" alt="HyStudio" width="380">
 </p>
 
-#
+<p align="center">
+  <strong>Customize a 3D car model and produce its 360° rotation for the head unit.</strong>
+</p>
 
-Logiciel de bureau pour personnaliser un modèle 3D de voiture et en produire une
-rotation 360° fluide, affichée par la visionneuse `i20view` de l'autoradio.
-Tout se fait à la souris : choix des matières, aperçu réaliste, génération, copie
-sur la carte SD.
+<p align="center">
+  <a href="https://github.com/Game-K-Hack/hystudio/releases/latest">
+    <img alt="Download HyStudio" src="https://img.shields.io/badge/Download-latest%20version-1B5EAA?style=for-the-badge&logo=windows&logoColor=white">
+  </a>
+</p>
 
-![Vue 3D et panneau Matière](docs/01_vue3d_matiere.png)
+<p align="center">
+  <a href="https://github.com/Game-K-Hack/hystudio/releases/latest"><img alt="Latest release" src="https://img.shields.io/github/v/release/Game-K-Hack/hystudio?label=version&color=1B5EAA"></a>
+  <img alt="Windows" src="https://img.shields.io/badge/Windows-10%20%7C%2011-0078D4">
+  <img alt="Rendering" src="https://img.shields.io/badge/rendering-Blender%20Cycles-EA7600">
+  <img alt="Formats" src="https://img.shields.io/badge/formats-glTF%20%7C%20OBJ-1B5EAA">
+  <img alt="Languages" src="https://img.shields.io/badge/languages-9-2E7D32">
+</p>
 
-## Démarrer
+<p align="center">
+  <a href="#features">Features</a> ·
+  <a href="#installation">Installation</a> ·
+  <a href="#getting-started">Getting started</a> ·
+  <a href="#guide">Guide</a> ·
+  <a href="#compatibility">Compatibility</a> ·
+  <a href="#faq">FAQ</a>
+</p>
 
-Double-cliquez sur **`HyStudio.exe`** (version compilée, dossier `dist\HyStudio`) ou
-sur **`HyStudio.pyw`** (depuis les sources). Au premier lancement, un projet
-Hyundai i20 prêt à l'emploi est créé avec des réglages déjà validés sur
-l'autoradio. Les projets s'enregistrent en `.hysp`.
+---
 
-Pour partir d'un autre véhicule : **Fichier › Nouveau projet** puis choisissez un
-modèle `.obj`, `.gltf` ou `.glb`.
+HyStudio is a desktop application that turns a 3D car model into a smooth
+animation, displayed by the `i20view` viewer on the Hyundai i20 head unit.
+Materials, logos, photorealistic preview, generation and installation on the SD
+card: everything happens in a single window, with no command line.
 
-**glTF (recommandé quand il existe)** : le fichier porte les textures (tableau de
-bord, compteurs, logos, intérieur…) et des matériaux complets. Les matériaux
-texturés gardent la matière **Matériau d'origine** : ils s'affichent tels que le
-fichier les décrit, dans la vue 3D comme dans le rendu. Les autres deviennent des
-matières HyStudio modifiables (peinture, verre, chrome…). Chaque matériau peut
-passer de l'un à l'autre dans le panneau Matière.
+![3D view and Material panel](docs/01_vue3d_matiere.png)
 
-**OBJ** : les matières de départ sont devinées d'après les noms des matériaux du
-fichier.
+<sub>Screenshots show the French interface; HyStudio follows your Windows language.</sub>
 
-Si le modèle est accompagné d'un fichier de matériaux `.mtl` contenant de vraies
-valeurs (couleurs, transparences, reflets), HyStudio propose de les reprendre :
-**Utiliser le MTL** ou **Ignorer**. Beaucoup d'exportateurs n'y écrivent qu'un
-gris uniforme : dans ce cas, rien n'est proposé. Le choix n'est pas définitif :
-**Fichier › Importer les matériaux d'un fichier MTL** l'applique à un projet
-existant (les pièces qui ont une matière propre ne changent pas, `Ctrl+Z`
-annule). Les textures d'image citées par le `.mtl` ne sont pas reprises.
+## Features
 
-## Personnaliser le véhicule
-
-- **Choisir une pièce** : cliquez dans la vue 3D (glisser pour tourner, molette
-  pour zoomer) ou dans la liste de gauche. Un clic sur un groupe de la liste
-  sélectionne toutes ses pièces.
-- **Changer sa matière** dans le panneau Matière : peinture (brillante, satinée,
-  mate), chrome, métal, plastique, caoutchouc, verre, image, ou masque pour la
-  faire disparaître.
-- **Une pièce ou tout le groupe** : « Cette pièce seulement » lui donne une
-  matière propre (marquée • dans la liste) ; l'autre choix modifie toutes les
-  pièces du même matériau.
-- **Renommer** une pièce avec le champ Nom, pour s'y retrouver dans la liste.
-
-### Poser une image : autocollant ou plaque
-
-Deux façons, selon la pièce :
-
-- **Autocollant** (logo sur une portière, bande sur le capot…) : gardez la vraie
-  matière de la pièce (peinture, plastique, métal…), tournez la vue 3D face à
-  l'endroit voulu, puis **Autocollant › Poser une image**. L'image se pose
-  par-dessus la matière, sans déformation, et seulement sur les faces tournées
-  vers cette vue. Réglez sa taille, sa position et sa rotation ; **Orienter
-  depuis la vue actuelle** la réoriente. Posé sur un groupe (par exemple
-  « Peinture carrosserie »), un seul autocollant couvre tout le groupe, à
-  cheval sur plusieurs pièces si besoin. Un PNG à fond transparent donne un
-  contour net.
-- **Matière Image** : l'image remplace toute la matière et s'étire jusqu'aux
-  bords de la pièce. C'est fait pour une pièce plate et rectangulaire, comme une
-  plaque d'immatriculation (520 × 110 mm) ; sur une pièce bombée, elle se
-  déforme.
-
-![Image posée sur la plaque arrière](docs/03_image_sur_piece.png)
-
-*Les captures utilisent une plaque fictive.*
-
-## Vérifier avant de lancer le calcul
-
-La vue 3D sert à reconnaître les pièces ; elle ne montre pas le rendu final.
-L'onglet **Aperçu réaliste** calcule en quelques secondes une vue sous l'angle
-choisi, exactement telle que l'autoradio l'affichera (800 × 424).
-
-![Aperçu réaliste](docs/02_apercu_realiste.png)
-
-Le panneau **Studio** règle l'exposition, la netteté, le nombre de vues
-(180, 360 ou 720, soit 2°, 1° ou 0,5° par vue), la qualité du calcul et la
-lumière d'habitacle. La durée et la taille estimées se mettent à jour à chaque
-changement.
-
-## Générer et installer sur l'autoradio
-
-1. **Générer pour l'autoradio** : toutes les vues sont calculées puis compressées
-   au fur et à mesure. La barre indique l'avancement et l'heure de fin prévue.
-   Le calcul peut être annulé ; le fichier n'est écrit que s'il est complet.
-2. **Copier sur la carte SD** : insérez la carte SD de l'autoradio dans le PC.
-   HyStudio la reconnaît, refuse d'écrire si elle est endommagée, copie la
-   rotation et la visionneuse, vérifie la copie puis éjecte la carte.
-
-![Génération en cours](docs/04_generation.png)
-
-## Langue
-
-HyStudio s'affiche dans la langue de Windows : français, anglais, espagnol,
-allemand, italien, russe, chinois, japonais ou coréen (anglais pour toute
-autre langue). Le menu **Langue** permet d'en choisir une autre ; la fenêtre
-change aussitôt, sans perdre le projet en cours ni l'historique d'annulation.
-**Automatique** revient à la langue de Windows.
-
-## Annuler une modification
-
-`Ctrl+Z` annule, `Ctrl+Y` (ou `Ctrl+Maj+Z`) rétablit, aussi depuis le menu
-Édition. Cela couvre les matières, les noms et les réglages du studio. Plusieurs
-petits ajustements d'un même réglage à la suite s'annulent en une fois.
-
-## Modèles compatibles
-
-- **Formats** : glTF 2.0 (`.gltf` avec ses textures, ou `.glb`) et OBJ. L'OBJ
-  doit avoir l'axe Y vers le haut, le réglage par défaut de l'export OBJ de
-  Blender ; un modèle exporté avec Z vers le haut apparaît couché sur le côté :
-  réexportez-le. Un OBJ ne conserve en général pas les textures : préférez le
-  glTF quand le modèle en propose un.
-- **Unités** : détectées automatiquement (m, dm, cm, mm ou 1/10 mm) d'après la
-  longueur plausible d'une voiture. La lumière du studio et de l'habitacle
-  s'adapte à la taille du véhicule.
-- **Pièces séparées** : pour sélectionner une pièce seule ou y poser une image,
-  le modèle doit être découpé en objets. Si ce n'est pas le cas, HyStudio
-  prévient à l'ouverture. Les matières par matériau, le masquage, l'aperçu et
-  la génération restent disponibles.
-
-![Avertissement pour un modèle non découpé](docs/05_modele_non_decoupe.png)
-
-## Bon à savoir
-
-- **Durée** : chaque vue est un vrai calcul de lumière. Comptez environ 35 minutes
-  pour 720 vues avec une carte graphique récente (RTX 3080). Baisser la qualité
-  accélère le calcul ; vérifiez le grain dans l'aperçu.
-- **Place sur l'autoradio** : environ 100 Ko par vue, soit ~73 Mo pour 720 vues.
-  HyStudio prévient si le fichier devient trop gros pour la mémoire disponible.
-- **Intérieur sombre** : la lumière d'habitacle éclaire peu un intérieur presque
-  noir ; éclaircissez plutôt la matière de l'habitacle.
-- **Anciens projets** : les projets `.hyproj` et `.carproj` (Car Studio, l'ancien
-  nom) s'ouvrent toujours. Le projet de démarrage est copié au format `.hysp`,
-  l'ancien fichier reste en place.
-
-## Prérequis
-
-- Windows avec une carte graphique compatible OpenGL 3.3.
-- Version compilée : rien d'autre que Blender. Depuis les sources : Python 3.14
-  avec PySide6, PyOpenGL, numpy et Pillow ; PyInstaller pour compiler
-  (`build_exe.py`, qui produit le dossier `dist\HyStudio`, environ 170 Mo).
-- Blender 4.2 : la version portable du dossier `tools/` du dépôt, ou une
-  installation standard, trouvée automatiquement. Il n'est pas inclus dans
-  l'exe : placé dans un dossier `blender…` à côté de `HyStudio.exe`, il est
-  aussi reconnu.
-- Version compilée : le cache (géométrie, textures) va dans
-  `%LOCALAPPDATA%\HyStudio`, les projets dans `projets` à côté de l'exe.
-
-## Organisation du code
-
-| élément | rôle |
+| | |
 |---|---|
-| `core/objmodel.py` | lecture OBJ pièce par pièce, détection des unités, cache |
-| `core/presets.py` | types de matière, partagés par l'interface et le rendu |
-| `core/gltfmodel.py` | lecture glTF : géométrie, coordonnées de texture, matériaux et textures |
-| `core/mtl.py` | lecture du fichier `.mtl` et conversion en matières |
-| `core/project.py` | projet `.hysp` (JSON) et profil i20 |
-| `core/paths.py` | emplacements : sources ou exe, cache, projets, Blender |
-| `core/pipeline.py` | pilotage de Blender : aperçu, génération et compression |
-| `core/encoder.py` | format `I20P` lu par `i20view.exe` |
-| `core/i18n.py`, `core/translations.py` | langues de l'interface et table des traductions |
-| `core/device.py` | carte SD : intégrité, copie vérifiée, éjection |
-| `blender/render_project.py` | scène Cycles construite depuis le projet |
-| `ui/viewport.py` | vue 3D OpenGL, sélection des pièces |
-| `ui/mainwindow.py` | fenêtre, panneaux, tâches en arrière-plan |
-| `build_exe.py` | compilation en `HyStudio.exe` (PyInstaller) |
+| **Visual editing** | Pick parts with the mouse and apply realistic materials: gloss, satin or matte paint, chrome, metal, plastic, rubber, glass. |
+| **Logos and plates** | Stickers laid over the bodywork without distortion; images mapped onto flat parts such as licence plates. |
+| **Textured models** | glTF import with textures (dashboard, gauges, interior); OBJ import with optional use of the `.mtl` file. |
+| **Faithful preview** | Blender Cycles render of a single view in seconds, identical to what the head unit will display. |
+| **Complete production** | Rotation of 180 to 720 views, compressed to the viewer's format, with an estimated finish time. |
+| **Safe installation** | SD card detection, volume integrity check, MD5-verified copy, automatic eject. |
+| **Comfort** | Unlimited undo (`Ctrl+Z` / `Ctrl+Y`), interface in 9 languages, automatic detection of model units. |
+
+## Installation
+
+### Compiled version
+
+1. [Download the latest release](https://github.com/Game-K-Hack/hystudio/releases/latest)
+   (`HyStudio-<version>-windows-x64.zip`) and extract it anywhere.
+2. Install [Blender 4.2](https://www.blender.org/download/lts/4-2/), or drop its
+   portable version into a `blender…` folder next to `HyStudio.exe`.
+3. Run **`HyStudio.exe`**.
+
+HyStudio finds Blender automatically. Projects are saved in the `projets` folder
+next to the application; recomputable data goes to `%LOCALAPPDATA%\HyStudio`.
+
+### From source
+
+Requirements: Python 3.14 with PySide6, PyOpenGL, numpy and Pillow, plus
+Blender 4.2. Double-click **`HyStudio.pyw`** to start.
+
+To build the compiled version, run `build_exe.py` (requires PyInstaller): the
+resulting `dist\HyStudio` folder, about 170 MB, can be copied as is.
+
+### System requirements
+
+- Windows 10 or 11, graphics card supporting OpenGL 3.3
+- Blender 4.2 LTS; an NVIDIA RTX card greatly speeds up rendering
+
+## Getting started
+
+1. **Open a model**: **File › New project from a 3D model**, then choose a
+   `.gltf`, `.glb` or `.obj` file.
+2. **Customize**: click a part in the 3D view and change its material in the
+   **Material** panel.
+3. **Check**: the **Realistic preview** tab shows the final result from the
+   chosen angle.
+4. **Generate**: **Generate for the head unit** renders and compresses every view.
+5. **Install**: insert the head unit's SD card, then click **Copy to SD card**.
+
+## Guide
+
+### Materials
+
+Clicking in the 3D view or in the list selects a part; clicking a group selects
+every part sharing the same material. The **Material** panel then offers two
+scopes:
+
+- **This part only**: the part gets its own material, marked with • in the list;
+- **All parts with this material**: the change applies to the whole group.
+
+The **Name** field renames a part to keep the list readable.
+
+### Logos and plates
+
+| Need | Tool | How it works |
+|---|---|---|
+| Logo on a door, stripe on the bonnet | **Sticker** | Image laid over the material, visible only on faces turned towards the chosen view. Adjustable size, position and rotation. |
+| Licence plate, flat part | **Image material** | Image stretched over the whole part, fitted to its edges. |
+
+To place a sticker, turn the 3D view to face the spot, then choose
+**Sticker › Place an image**. Applied to a group such as "Body paint", a single
+sticker spans the whole group. A PNG with a transparent background gives a
+clean outline.
+
+![Image placed on the rear plate](docs/03_image_sur_piece.png)
+
+<sub>Screenshots use a fictitious licence plate.</sub>
+
+### Preview and studio settings
+
+The 3D view is for identifying parts; the **Realistic preview** tab renders a
+photorealistic view in seconds, at the head unit's exact format (800 × 424).
+
+![Realistic preview](docs/02_apercu_realiste.png)
+
+The **Studio** panel controls:
+
+| Setting | Effect |
+|---|---|
+| Exposure | Overall brightness of the render |
+| Sharpness | Detail enhancement after downscaling |
+| Precision | 180, 360 or 720 views per turn (2°, 1° or 0.5° per view) |
+| Samples | Lighting quality, at the cost of render time |
+| Cabin light | Interior lighting, visible through the windows |
+
+Duration and file size are estimated in real time.
+
+### Generation and installation
+
+**Generate for the head unit** renders the full rotation and compresses each view
+as it goes, with a progress bar and the expected finish time. The render can be
+cancelled; the file is written only once complete.
+
+**Copy to SD card** recognizes the head unit's card, refuses to write to a
+damaged volume, copies the rotation and the viewer, verifies the copy, then
+ejects the card.
+
+![Generation in progress](docs/04_generation.png)
+
+### Language
+
+The interface follows the Windows language: English, French, Spanish, German,
+Italian, Russian, Chinese, Japanese or Korean, with English for any other
+language. The **Language** menu switches at any time without closing the open
+project.
+
+## Compatibility
+
+### Model formats
+
+| Format | Geometry | Textures | Materials | Note |
+|---|:---:|:---:|:---:|---|
+| glTF 2.0 (`.gltf`, `.glb`) | ✓ | ✓ | ✓ | Recommended |
+| OBJ (`.obj` + `.mtl`) | ✓ | — | `.mtl` colours, on request | Y axis up |
+
+- **glTF**: textured materials keep the **Original material** type and render
+  exactly as the file describes them; the others become editable HyStudio
+  materials.
+- **OBJ**: if the `.mtl` file contains real values, HyStudio offers to use them.
+  **File › Import materials from an MTL file** applies them later to an existing
+  project.
+- **Units**: metres, decimetres, centimetres, millimetres or tenths of a
+  millimetre, detected from the vehicle's length.
+- **Parts**: selecting a single part and placing images require a model split
+  into objects. Otherwise HyStudio says so and keeps per-material editing,
+  preview and generation.
+
+![Warning for a model not split into parts](docs/05_modele_non_decoupe.png)
+
+### Projects
+
+Projects are saved as `.hysp`. The older `.hyproj` and `.carproj` formats still
+open.
+
+### Version
+
+The current version appears in the window title and in **? › About HyStudio**.
+Changes between versions are listed in the [changelog](CHANGELOG.md).
+
+## FAQ
+
+<details>
+<summary><strong>How long does a generation take?</strong></summary>
+
+Each view is a real lighting computation: allow about 35 minutes for 720 views on
+an RTX 3080. Fewer samples speed things up; check the grain in the preview before
+starting the generation.
+</details>
+
+<details>
+<summary><strong>How much space does the rotation take on the head unit?</strong></summary>
+
+About 100 KB per view, i.e. 73 MB for 720 views. HyStudio warns when the file
+approaches the memory available on the head unit.
+</details>
+
+<details>
+<summary><strong>The model appears lying on its side.</strong></summary>
+
+The OBJ file was exported with the Z axis up. Export it again with the Y axis up,
+Blender's default setting, or use its glTF version.
+</details>
+
+<details>
+<summary><strong>The dashboard colours don't show.</strong></summary>
+
+They come from textures, which the OBJ format usually does not keep. Open the
+glTF version of the model when available.
+</details>
+
+<details>
+<summary><strong>The interior stays dark despite the cabin light.</strong></summary>
+
+A nearly black interior reflects little light. Lighten the interior material
+rather than increasing the power.
+</details>
+
+<details>
+<summary><strong>How do I undo a change?</strong></summary>
+
+`Ctrl+Z` undoes and `Ctrl+Y` redoes, also from the **Edit** menu. Materials,
+names and studio settings are covered; several small successive adjustments of
+the same setting are undone in one step.
+</details>
