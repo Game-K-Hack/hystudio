@@ -166,7 +166,10 @@ def parse(path, progress=None):
     """-> (pieces [(nom, materiaux, positions, normales, uvs, plages)], materiaux {nom: info})."""
     r = _Reader(path)
     g = r.g
-    sig = hashlib.sha1(os.path.abspath(path).encode()).hexdigest()[:10]
+    # taille et date dans la signature : un modele remplace par une nouvelle version ne doit pas
+    # reprendre les textures extraites de l'ancienne
+    st = os.stat(path)
+    sig = hashlib.sha1(f"{os.path.abspath(path)}|{st.st_size}|{st.st_mtime_ns}".encode()).hexdigest()[:10]
     tex_cache = os.path.join(CACHE_DIR, "textures_gltf")
     os.makedirs(tex_cache, exist_ok=True)
 
