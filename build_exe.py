@@ -1,11 +1,16 @@
-"""Compile HyStudio en application Windows (PyInstaller, dossier dist\\HyStudio).
+"""Compile HyStudio en application Windows puis en installateur.
 
     python hystudio/build_exe.py
 
-Mode dossier (onedir) plutot que fichier unique : demarrage immediat, sans
-decompresser ~200 Mo de Qt a chaque lancement. Le dossier dist\\HyStudio se
-copie tel quel ; Blender n'est pas inclus (trop lourd) : HyStudio le cherche
-dans tools\\ du depot, dans un dossier blender* a cote de l'exe, ou dans
+  1. PyInstaller : dossier dist\\HyStudio (HyStudio.exe + _internal), mode dossier
+     plutot que fichier unique : demarrage immediat, sans decompresser Qt a chaque
+     lancement.
+  2. Inno Setup 6 : dist\\HyStudio-<version>-Setup.exe, installe tous les dossiers ;
+     c'est le fichier a joindre a la release GitHub (la mise a jour integree
+     cherche un fichier « ...Setup.exe »).
+
+Blender n'est pas inclus (trop lourd) : HyStudio le cherche dans tools\\ du depot,
+dans un dossier blender* a cote de l'exe ou dans Documents\\HyStudio, ou dans
 Program Files. Les fichiers .spec et build\\ sont des produits intermediaires.
 """
 import os, shutil, sys
@@ -106,9 +111,29 @@ def main():
     PyInstaller.__main__.run(args)
     exe = os.path.join(DIST, "HyStudio", "HyStudio.exe")
     size = sum(os.path.getsize(os.path.join(r, f)) for r, _, fs in os.walk(os.path.dirname(exe)) for f in fs)
-    # archive a joindre a la release GitHub
-    archive = shutil.make_archive(os.path.join(DIST, f"HyStudio-{version}-windows-x64"), "zip", DIST, "HyStudio")
-    print(f"\nHyStudio.exe : {exe}\ntaille du dossier : {size / 1e6:.0f} Mo\narchive : {archive}")
+    print(f"\nHyStudio.exe : {exe}\ntaille du dossier : {size / 1e6:.0f} Mo")
+    setup = build_installer(version, ico)
+    print(f"installateur : {setup} ({os.path.getsize(setup) / 1e6:.0f} Mo)")
+
+
+def find_iscc():
+    import glob
+    cands = [shutil.which("ISCC")] + [os.path.join(os.environ.get(v, ""), "Inno Setup 6", "ISCC.exe")
+                                      for v in ("ProgramFiles(x86)", "ProgramFiles")]
+    cands += glob.glob(os.path.join(os.environ.get("LOCALAPPDATA", ""), "Programs", "Inno Setup 6", "ISCC.exe"))
+    return next((c for c in cands if c and os.path.isfile(c)), None)
+
+
+def build_installer(version, ico):
+    """Installateur Inno Setup a partir de dist\\HyStudio."""
+    import subprocess
+    iscc = find_iscc()
+    if not iscc:
+        raise SystemExit("Inno Setup 6 introuvable (ISCC.exe) : installez-le pour produire l'installateur.")
+    subprocess.run([iscc, "/Q", f"/DAppVersion={version}", f"/DSourceDir={os.path.join(DIST, 'HyStudio')}",
+                    f"/DOutputDir={DIST}", f"/DIconFile={ico}", os.path.join(HERE, "installer", "hystudio.iss")],
+                   check=True)
+    return os.path.join(DIST, f"HyStudio-{version}-Setup.exe")
 
 
 if __name__ == "__main__":

@@ -5,8 +5,11 @@
   APP_DIR    dossier du logiciel : sources, ou dossier contenant HyStudio.exe
   CACHE      donnees recalculables (geometrie, textures glTF, rendus en cours) :
              cache/ des sources, ou %LOCALAPPDATA%\\HyStudio\\cache pour l'exe
-  PROJECTS   projets de l'utilisateur : projets/ a cote du logiciel s'il est
-             inscriptible, sinon Documents\\HyStudio
+  USER_HOME  dossier de l'utilisateur, Documents\\HyStudio pour l'exe
+  PROJECTS   projets de l'utilisateur : Documents\\HyStudio\\projets pour l'exe
+
+Pour l'exe installe, rien de l'utilisateur ne vit dans le dossier du logiciel :
+une mise a jour remplace ce dossier sans toucher aux projets, modeles et cache.
   REPO       depot hyundev s'il entoure le logiciel (Blender portable dans tools/,
              modele de la i20 dans interface/), sinon None
 """
@@ -33,33 +36,39 @@ def _find_repo():
     return None
 
 
-def _writable(d):
-    try:
-        os.makedirs(d, exist_ok=True)
-        probe = os.path.join(d, ".ecriture")
-        with open(probe, "w") as f:
-            f.write("ok")
-        os.remove(probe)
-        return True
-    except OSError:
-        return False
-
-
 REPO = _find_repo()
+
+def _documents():
+    """Dossier Documents reel (redirige vers OneDrive chez certains utilisateurs)."""
+    if os.name == "nt":
+        import ctypes, uuid
+        from ctypes import wintypes
+
+        class GUID(ctypes.Structure):
+            _fields_ = [("d1", wintypes.DWORD), ("d2", wintypes.WORD), ("d3", wintypes.WORD), ("d4", ctypes.c_ubyte * 8)]
+        u = uuid.UUID("FDD39AD0-238F-46AF-ADB4-6C85480369C7")                  # FOLDERID_Documents
+        g = GUID(u.fields[0], u.fields[1], u.fields[2], (ctypes.c_ubyte * 8)(*u.bytes[8:]))
+        out = ctypes.c_wchar_p()
+        if ctypes.windll.shell32.SHGetKnownFolderPath(ctypes.byref(g), 0, None, ctypes.byref(out)) == 0:
+            path = out.value
+            ctypes.windll.ole32.CoTaskMemFree(out)
+            if path:
+                return path
+    return os.path.join(os.path.expanduser("~"), "Documents")
+
 
 if FROZEN:
     CACHE = os.path.join(os.environ.get("LOCALAPPDATA") or os.path.expanduser("~"), "HyStudio", "cache")
-    # projets/ a cote de l'exe s'il existe, sinon ceux des sources (exe compile dans hystudio\dist),
-    # sinon a cote de l'exe s'il est inscriptible, sinon Documents\HyStudio (ex. Program Files)
+    USER_HOME = os.path.join(_documents(), "HyStudio")
+    # projets/ d'une ancienne version en archive (a cote de l'exe), ceux des sources pour un exe
+    # compile dans le depot, sinon Documents\HyStudio\projets
     candidates = [os.path.join(APP_DIR, "projets")]
     if REPO:
         candidates.append(os.path.join(REPO, "hystudio", "projets"))
-    PROJECTS = next((c for c in candidates if os.path.isdir(c)), None)
-    if PROJECTS is None:
-        PROJECTS = candidates[0] if _writable(candidates[0]) else \
-            os.path.join(os.path.expanduser("~"), "Documents", "HyStudio")
+    PROJECTS = next((c for c in candidates if os.path.isdir(c)), os.path.join(USER_HOME, "projets"))
 else:
     CACHE = os.path.join(SOURCES, "cache")
+    USER_HOME = REPO or SOURCES
     PROJECTS = os.path.join(SOURCES, "projets")
 
 WORK = os.path.join(CACHE, "travail")
@@ -78,7 +87,7 @@ def viewer_exe():
 def find_blender():
     """Blender portable (a cote de l'exe ou dans tools/ du depot), sinon installation standard."""
     cands = []
-    for base in (APP_DIR, REPO):
+    for base in (APP_DIR, REPO, USER_HOME):
         if base:
             cands += sorted(glob.glob(os.path.join(base, "tools", "blender*", "blender.exe")), reverse=True)
             cands += sorted(glob.glob(os.path.join(base, "blender*", "blender.exe")), reverse=True)
