@@ -114,36 +114,6 @@ def main():
     print(f"\nHyStudio.exe : {exe}\ntaille du dossier : {size / 1e6:.0f} Mo")
     setup = build_installer(version, ico)
     print(f"installateur : {setup} ({os.path.getsize(setup) / 1e6:.0f} Mo)")
-    portable = build_portable(version)
-    print(f"portable : {portable} ({os.path.getsize(portable) / 1e6:.0f} Mo)")
-
-
-PORTABLE_NOTE = """HyStudio portable
-
-Ce fichier active le mode portable : projets, cache et reglages restent dans ce
-dossier (projets, cache, HyStudio.ini). Rien n'est ecrit dans Documents, AppData
-ni le registre. Supprimez-le pour utiliser les emplacements de l'installateur.
-
-Mise a jour : extrayez la nouvelle archive par-dessus ce dossier ; les dossiers
-projets et cache sont conserves.
-
-This file enables portable mode: projects, cache and settings stay in this folder.
-To update, extract the new archive over this folder; projects and cache are kept.
-"""
-
-
-def build_portable(version):
-    """Archive portable : dist\\HyStudio + portable.txt, sans modifier le dossier de l'installateur."""
-    import zipfile
-    src = os.path.join(DIST, "HyStudio")
-    out = os.path.join(DIST, f"HyStudio-{version}-Portable.zip")
-    with zipfile.ZipFile(out, "w", zipfile.ZIP_DEFLATED, compresslevel=9) as z:
-        for base, _, files in os.walk(src):
-            for f in files:
-                full = os.path.join(base, f)
-                z.write(full, os.path.join("HyStudio", os.path.relpath(full, src)))
-        z.writestr("HyStudio/portable.txt", PORTABLE_NOTE)
-    return out
 
 
 def find_iscc():

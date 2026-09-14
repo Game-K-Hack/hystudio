@@ -24,7 +24,6 @@ First public release.
 - Validated Hyundai i20 profile, offered only when its model files are available.
 - `.hysp` project format; `.hyproj` and `.carproj` projects still open.
 - Windows installer with Start menu entry and uninstaller, no administrator rights required.
-- Portable edition keeping projects, cache and settings in its own folder.
 - Update check at startup and one-click update that keeps projects, models and cache.
 - Version shown in the window title and in the About dialog.
 

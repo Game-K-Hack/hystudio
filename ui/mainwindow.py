@@ -501,7 +501,7 @@ class MainWindow(QMainWindow):
         else:
             QTimer.singleShot(0, self.open_startup_project)
             # verification discrete des mises a jour : exe, ou essai via HYSTUDIO_UPDATE_URL
-            if paths.FROZEN or os.environ.get("HYSTUDIO_UPDATE_URL"):
+            if updater.can_install() or os.environ.get("HYSTUDIO_UPDATE_URL"):
                 QTimer.singleShot(3000, self.check_updates)
 
     # ------------------------------------------------------------ construction
@@ -578,6 +578,7 @@ class MainWindow(QMainWindow):
     def check_updates(self, quiet=True):
         """Derniere release GitHub, en arriere-plan. quiet : au demarrage, rien si a jour ou hors ligne."""
         def done(release):
+            from PySide6.QtCore import QSettings
             if release is None:
                 if not quiet:
                     online = getattr(self, "_update_reachable", True)
@@ -585,7 +586,7 @@ class MainWindow(QMainWindow):
                                             tr("HyStudio est à jour (version {v}).", v=VERSION) if online
                                             else tr("Impossible de vérifier les mises à jour : pas de connexion à GitHub."))
                 return
-            if quiet and paths.settings().value("maj/ignoree", "") == release.version:
+            if quiet and QSettings("HyStudio", "HyStudio").value("maj/ignoree", "") == release.version:
                 return
             self._offer_update(release)
 
@@ -603,12 +604,12 @@ class MainWindow(QMainWindow):
         run_async(self, job, done, lambda e: None)
 
     def _offer_update(self, release):
+        from PySide6.QtCore import QSettings
         box = QMessageBox(self)
         box.setWindowTitle(tr("Mise à jour disponible"))
         box.setIconPixmap(self.windowIcon().pixmap(64, 64))
         box.setText(f"<h3>HyStudio {release.version}</h3>")
-        box.setInformativeText(tr("MAJ_DISPO_PORTABLE" if paths.PORTABLE else "MAJ_DISPO",
-                                  new=release.version, cur=VERSION))
+        box.setInformativeText(tr("MAJ_DISPO", new=release.version, cur=VERSION))
         if release.notes:
             box.setDetailedText(release.notes)
         if updater.can_install():
@@ -620,7 +621,7 @@ class MainWindow(QMainWindow):
         box.setDefaultButton(go)
         box.exec()
         if box.clickedButton() is skip:
-            paths.settings().setValue("maj/ignoree", release.version)
+            QSettings("HyStudio", "HyStudio").setValue("maj/ignoree", release.version)
         elif box.clickedButton() is go:
             if updater.can_install():
                 self._install_update(release)

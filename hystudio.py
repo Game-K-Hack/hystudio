@@ -18,13 +18,6 @@ from ui.viewport import set_default_format            # noqa: E402
 
 
 def main():
-    if "--diagnostic" in sys.argv:                     # emplacements utilises, sans interface
-        import json
-        from core import paths
-        out = sys.argv[sys.argv.index("--diagnostic") + 1]
-        with open(out, "w", encoding="utf-8") as f:
-            json.dump(paths.summary(), f, indent=2, ensure_ascii=False)
-        return 0
     set_default_format()                               # OpenGL 3.3 avant toute fenetre
     if os.name == "nt":
         # identite propre dans la barre des taches : sinon Windows y montre l'icone de python.exe

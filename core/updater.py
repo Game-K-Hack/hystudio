@@ -7,7 +7,7 @@ supprime puis reinstalle _internal et HyStudio.exe, jamais les projets
 Sans connexion, check() renvoie None sans rien signaler : la verification au
 demarrage doit rester invisible.
 """
-import hashlib, json, os, re, subprocess, tempfile, urllib.request
+import hashlib, json, os, re, subprocess, sys, tempfile, urllib.request
 
 from .version import REPO_URL, VERSION
 
@@ -92,7 +92,5 @@ def launch_installer(path):
 
 
 def can_install():
-    """Installation automatique pour l'exe installe seulement ; version portable et sources :
-    on ouvre la page de la release (l'installateur installerait ailleurs)."""
-    from .paths import FROZEN, PORTABLE
-    return FROZEN and not PORTABLE
+    """Installation automatique pour l'exe seulement ; depuis les sources, on ouvre la page de la release."""
+    return bool(getattr(sys, "frozen", False))

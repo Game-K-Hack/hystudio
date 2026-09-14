@@ -55,18 +55,10 @@ card: everything happens in a single window, with no command line.
 
 ## Installation
 
-Each [release](https://github.com/Game-K-Hack/hystudio/releases/latest) comes in
-two editions:
-
-| Edition | File | Best for |
-|---|---|---|
-| **Installer** | `HyStudio-<version>-Setup.exe` | Everyday use: Start menu, uninstaller, one-click updates |
-| **Portable** | `HyStudio-<version>-Portable.zip` | USB drive or no installation: everything stays in one folder |
-
 ### Installer
 
-1. [Download](https://github.com/Game-K-Hack/hystudio/releases/latest)
-   `HyStudio-<version>-Setup.exe` and run it. No administrator rights are
+1. [Download the latest release](https://github.com/Game-K-Hack/hystudio/releases/latest)
+   (`HyStudio-<version>-Setup.exe`) and run it. No administrator rights are
    needed; HyStudio is added to the Start menu and to Windows' installed apps.
 2. Install [Blender 4.2](https://www.blender.org/download/lts/4-2/), or drop its
    portable version into a `blender…` folder in `Documents\HyStudio`.
@@ -80,18 +72,6 @@ HyStudio finds Blender automatically.
 | Projects | `Documents\HyStudio\projets` |
 | Cache (recomputable) | `%LOCALAPPDATA%\HyStudio` |
 
-### Portable
-
-1. [Download](https://github.com/Game-K-Hack/hystudio/releases/latest)
-   `HyStudio-<version>-Portable.zip` and extract it anywhere, including a USB drive.
-2. Install [Blender 4.2](https://www.blender.org/download/lts/4-2/), or drop its
-   portable version into a `blender…` folder next to `HyStudio.exe`.
-3. Run **`HyStudio.exe`**.
-
-Projects (`projets`), cache (`cache`) and settings (`HyStudio.ini`) stay in the
-HyStudio folder: nothing is written to Documents, AppData or the registry. The
-`portable.txt` file enables this mode.
-
 ### Updates
 
 At startup, HyStudio checks GitHub for a newer release, silently when offline.
@@ -101,10 +81,6 @@ time. The update is downloaded and verified, then installed: only the
 application is replaced, your projects, models and cache are never touched, and
 HyStudio restarts on its own.
 
-The portable edition checks for updates the same way and opens the download
-page: extract the new archive over the existing folder, your `projets` and
-`cache` folders are kept.
-
 ### From source
 
 Requirements: Python 3.14 with PySide6, PyOpenGL, numpy and Pillow, plus
@@ -112,9 +88,8 @@ Blender 4.2. Double-click **`HyStudio.pyw`** to start.
 
 To build the installer, run `build_exe.py` (requires PyInstaller and
 [Inno Setup 6](https://jrsoftware.org/isinfo.php)): it produces the application
-folder `dist\HyStudio`, the installer `dist\HyStudio-<version>-Setup.exe` and
-the portable archive `dist\HyStudio-<version>-Portable.zip`, both to attach to
-the GitHub release.
+folder `dist\HyStudio` and the installer `dist\HyStudio-<version>-Setup.exe`
+to attach to the GitHub release.
 
 ### System requirements
 

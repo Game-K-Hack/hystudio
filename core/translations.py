@@ -100,25 +100,6 @@ TABLE = {
         fr="Une nouvelle version de HyStudio est disponible (vous utilisez la {cur}) : version {new}.\n\n"
            "Vos projets et vos modèles sont conservés : seul le logiciel est remplacé. "
            "HyStudio redémarrera une fois installé."),
-    "MAJ_DISPO_PORTABLE": L(
-        "A new version of HyStudio is available (you are using {cur}): version {new}.\n\n"
-        "Download the portable archive and extract it over this folder: your projets and cache folders are kept.",
-        "Hay una nueva versión de HyStudio disponible (usa la {cur}): versión {new}.\n\n"
-        "Descargue el archivo portable y extráigalo sobre esta carpeta: sus carpetas projets y cache se conservan.",
-        "Eine neue HyStudio-Version ist verfügbar (Sie nutzen {cur}): Version {new}.\n\n"
-        "Laden Sie das portable Archiv herunter und entpacken Sie es in diesen Ordner: Ihre Ordner projets und cache bleiben erhalten.",
-        "È disponibile una nuova versione di HyStudio (in uso: {cur}): versione {new}.\n\n"
-        "Scarica l'archivio portable ed estrailo sopra questa cartella: le cartelle projets e cache vengono conservate.",
-        "Доступна новая версия HyStudio (у вас {cur}): версия {new}.\n\n"
-        "Скачайте портативный архив и распакуйте его поверх этой папки: папки projets и cache сохранятся.",
-        "HyStudio 有新版本可用（当前 {cur}）：{new} 版。\n\n请下载便携版压缩包并解压覆盖此文件夹：projets 和 cache 文件夹会保留。",
-        "HyStudio の新しいバージョンがあります（現在 {cur}）：バージョン {new}。\n\n"
-        "ポータブル版のアーカイブをダウンロードし、このフォルダーに上書きで展開してください。projets と cache フォルダーは残ります。",
-        "새 HyStudio 버전을 사용할 수 있습니다 (현재 {cur}): 버전 {new}.\n\n"
-        "포터블 압축 파일을 내려받아 이 폴더에 덮어써서 풀어 주세요. projets와 cache 폴더는 유지됩니다.",
-        fr="Une nouvelle version de HyStudio est disponible (vous utilisez la {cur}) : version {new}.\n\n"
-           "Téléchargez l'archive portable et extrayez-la par-dessus ce dossier : "
-           "vos dossiers projets et cache sont conservés."),
     "Mettre à jour": L("Update", "Actualizar", "Aktualisieren", "Aggiorna", "Обновить", "更新", "更新する", "업데이트"),
     "Plus tard": L("Later", "Más tarde", "Später", "Più tardi", "Позже", "稍后", "後で", "나중에"),
     "Ignorer cette version": L(
