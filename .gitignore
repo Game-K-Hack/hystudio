@@ -1,0 +1,16 @@
+# Artefacts de build PyInstaller
+build/
+*.spec
+
+# Python
+__pycache__/
+*.pyc
+
+# Exécutables : jamais dans git, ils vont dans les Releases
+dist/
+
+models/
+projets/
+
+# Donnees regenerees : geometrie, textures, rendus en cours
+cache/
