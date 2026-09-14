@@ -21,7 +21,10 @@ APP_DIR = os.path.dirname(os.path.abspath(sys.executable)) if FROZEN else SOURCE
 def _find_repo():
     d = APP_DIR
     for _ in range(5):                                 # dist\HyStudio\ est a 3 niveaux sous hyundev
-        if os.path.isdir(os.path.join(d, "interface")) or os.path.isdir(os.path.join(d, "tools")):
+        # le depot hyundev : dossier hystudio accompagne de interface/ ou tools/ (un simple
+        # dossier « tools » chez un utilisateur ne doit pas etre pris pour le depot)
+        if os.path.isdir(os.path.join(d, "hystudio")) and (
+                os.path.isdir(os.path.join(d, "interface")) or os.path.isdir(os.path.join(d, "tools"))):
             return d
         parent = os.path.dirname(d)
         if parent == d:
