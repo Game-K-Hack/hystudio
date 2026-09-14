@@ -30,11 +30,6 @@ TABLE = {
     "Enregistrer": L("Save", "Guardar", "Speichern", "Salva", "Сохранить", "保存", "保存", "저장"),
     "Enregistrer sous…": L("Save as…", "Guardar como…", "Speichern unter…", "Salva con nome…",
                            "Сохранить как…", "另存为…", "名前を付けて保存…", "다른 이름으로 저장…"),
-    "Recharger le profil Hyundai i20 validé": L(
-        "Reload the validated Hyundai i20 profile", "Recargar el perfil validado del Hyundai i20",
-        "Validiertes Hyundai-i20-Profil neu laden", "Ricarica il profilo Hyundai i20 validato",
-        "Загрузить проверенный профиль Hyundai i20", "重新加载已验证的 Hyundai i20 配置",
-        "検証済みの Hyundai i20 プロファイルを再読み込み", "검증된 Hyundai i20 프로필 다시 불러오기"),
     "Quitter": L("Quit", "Salir", "Beenden", "Esci", "Выход", "退出", "終了", "끝내기"),
     "Annuler": L("Undo", "Deshacer", "Rückgängig", "Annulla", "Отменить", "撤销", "元に戻す", "실행 취소"),
     "Rétablir": L("Redo", "Rehacer", "Wiederherstellen", "Ripeti", "Повторить", "重做", "やり直し", "다시 실행"),

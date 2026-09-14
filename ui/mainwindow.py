@@ -533,9 +533,6 @@ class MainWindow(QMainWindow):
                 (tr("Enregistrer sous…"), self.save_project_as, QKeySequence.SaveAs),
                 (None, None, None),
                 (tr("Importer les matériaux d'un fichier MTL…"), self.import_mtl, None),
-                # profil i20 : seulement si ses fichiers sont presents (depot hyundev)
-                *([(tr("Recharger le profil Hyundai i20 validé"), self.load_i20_profile, None)]
-                  if projmod.i20_available() else []),
                 (None, None, None),
                 (tr("Quitter"), self.close, QKeySequence.Quit)):
             if text is None:
@@ -780,14 +777,6 @@ class MainWindow(QMainWindow):
             p.save(path)
             self.set_project(p)
             self.say(tr("Profil i20 validé créé : {path}", path=path))
-
-    def load_i20_profile(self):
-        if not self.confirm_discard():
-            return
-        p = projmod.i20_profile()
-        p.path = self.project.path if self.project else os.path.join(PROJECTS, "i20" + projmod.EXTENSION)
-        self.set_project(p)
-        self.mark_dirty()
 
     def set_project(self, p):
         self.project = p
