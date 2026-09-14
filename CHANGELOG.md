@@ -21,7 +21,7 @@ First public release.
 - SD card installation with integrity check, MD5-verified copy and automatic eject.
 - Unlimited undo and redo.
 - Interface in 9 languages with automatic detection and a Language menu.
-- Validated Hyundai i20 profile.
+- Validated Hyundai i20 profile, offered only when its model files are available.
 - `.hysp` project format; `.hyproj` and `.carproj` projects still open.
 - Windows installer with Start menu entry and uninstaller, no administrator rights required.
 - Update check at startup and one-click update that keeps projects, models and cache.

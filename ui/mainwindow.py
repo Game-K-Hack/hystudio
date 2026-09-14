@@ -528,7 +528,9 @@ class MainWindow(QMainWindow):
                 (tr("Enregistrer sous…"), self.save_project_as, QKeySequence.SaveAs),
                 (None, None, None),
                 (tr("Importer les matériaux d'un fichier MTL…"), self.import_mtl, None),
-                (tr("Recharger le profil Hyundai i20 validé"), self.load_i20_profile, None),
+                # profil i20 : seulement si ses fichiers sont presents (depot hyundev)
+                *([(tr("Recharger le profil Hyundai i20 validé"), self.load_i20_profile, None)]
+                  if projmod.i20_available() else []),
                 (None, None, None),
                 (tr("Quitter"), self.close, QKeySequence.Quit)):
             if text is None:
@@ -763,7 +765,7 @@ class MainWindow(QMainWindow):
             p.save(path)
             self.set_project(p)
             self.say(tr("Projet converti au format .hysp : {path}", path=path))
-        elif not paths.REPO:                       # hors du depot : pas de modele i20, on attend un projet
+        elif not projmod.i20_available():          # pas de modele i20 : on attend un projet
             self.say(tr("Ouvrez un projet ou créez-en un depuis un modèle 3D (menu Fichier)."))
         else:
             p = projmod.i20_profile()

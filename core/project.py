@@ -112,6 +112,16 @@ class Project:
 
 # ----------------------------------------------------------------- profils
 
+I20_MODEL = ("interface", "Hyundai Elite i20 2017", "Hyundai Elite i20 2017.obj")
+
+
+def i20_available():
+    """Profil i20 proposable : seulement avec le modele du depot hyundev, que les
+    utilisateurs de l'installateur n'ont pas."""
+    path = paths.repo_file(*I20_MODEL)
+    return bool(path) and os.path.isfile(path)
+
+
 def i20_profile():
     """Hyundai Elite i20 2017 (Hum3D) avec les reglages valides le 13/09/2026.
 
@@ -122,7 +132,7 @@ def i20_profile():
     L = presets.linear_to_hex
     p = Project()
     p.name = "Hyundai i20"
-    p.model = paths.repo_file("interface", "Hyundai Elite i20 2017", "Hyundai Elite i20 2017.obj")
+    p.model = paths.repo_file(*I20_MODEL)
     black = {"kind": "plastique", "color": L((0.012, 0.012, 0.013)), "rough": 0.35}
     p.materials = {
         "carpaint":    {"kind": "peinture", "color": L((0.80, 0.81, 0.82)), "finish": "brillant"},
