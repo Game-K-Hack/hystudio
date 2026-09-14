@@ -50,28 +50,46 @@ card: everything happens in a single window, with no command line.
 | **Faithful preview** | Blender Cycles render of a single view in seconds, identical to what the head unit will display. |
 | **Complete production** | Rotation of 180 to 720 views, compressed to the viewer's format, with an estimated finish time. |
 | **Safe installation** | SD card detection, volume integrity check, MD5-verified copy, automatic eject. |
+| **Always up to date** | Checks for new versions at startup and updates in one click, keeping your projects and models. |
 | **Comfort** | Unlimited undo (`Ctrl+Z` / `Ctrl+Y`), interface in 9 languages, automatic detection of model units. |
 
 ## Installation
 
-### Compiled version
+### Installer
 
 1. [Download the latest release](https://github.com/Game-K-Hack/hystudio/releases/latest)
-   (`HyStudio-<version>-windows-x64.zip`) and extract it anywhere.
+   (`HyStudio-<version>-Setup.exe`) and run it. No administrator rights are
+   needed; HyStudio is added to the Start menu and to Windows' installed apps.
 2. Install [Blender 4.2](https://www.blender.org/download/lts/4-2/), or drop its
-   portable version into a `blender…` folder next to `HyStudio.exe`.
-3. Run **`HyStudio.exe`**.
+   portable version into a `blender…` folder in `Documents\HyStudio`.
+3. Launch **HyStudio**.
 
-HyStudio finds Blender automatically. Projects are saved in the `projets` folder
-next to the application; recomputable data goes to `%LOCALAPPDATA%\HyStudio`.
+HyStudio finds Blender automatically.
+
+| Data | Location |
+|---|---|
+| Application | `%LOCALAPPDATA%\Programs\HyStudio` |
+| Projects | `Documents\HyStudio\projets` |
+| Cache (recomputable) | `%LOCALAPPDATA%\HyStudio` |
+
+### Updates
+
+At startup, HyStudio checks GitHub for a newer release, silently when offline.
+When one is available, it shows the release notes and offers to **Update**,
+postpone, or skip that version; **? › Check for updates** runs the check at any
+time. The update is downloaded and verified, then installed: only the
+application is replaced, your projects, models and cache are never touched, and
+HyStudio restarts on its own.
 
 ### From source
 
 Requirements: Python 3.14 with PySide6, PyOpenGL, numpy and Pillow, plus
 Blender 4.2. Double-click **`HyStudio.pyw`** to start.
 
-To build the compiled version, run `build_exe.py` (requires PyInstaller): the
-resulting `dist\HyStudio` folder, about 170 MB, can be copied as is.
+To build the installer, run `build_exe.py` (requires PyInstaller and
+[Inno Setup 6](https://jrsoftware.org/isinfo.php)): it produces the application
+folder `dist\HyStudio` and the installer `dist\HyStudio-<version>-Setup.exe`
+to attach to the GitHub release.
 
 ### System requirements
 

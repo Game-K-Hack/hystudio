@@ -23,5 +23,8 @@ First public release.
 - Interface in 9 languages with automatic detection and a Language menu.
 - Validated Hyundai i20 profile.
 - `.hysp` project format; `.hyproj` and `.carproj` projects still open.
+- Windows installer with Start menu entry and uninstaller, no administrator rights required.
+- Update check at startup and one-click update that keeps projects, models and cache.
+- Version shown in the window title and in the About dialog.
 
 [1.0.0]: https://github.com/Game-K-Hack/hystudio/releases/tag/v1.0.0
