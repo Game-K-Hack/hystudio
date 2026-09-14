@@ -44,6 +44,7 @@ card: everything happens in a single window, with no command line.
 
 | | |
 |---|---|
+| **Car library** | Pick a car from a gallery of covers and start a project in one double-click. |
 | **Visual editing** | Pick parts with the mouse and apply realistic materials: gloss, satin or matte paint, chrome, metal, plastic, rubber, glass. |
 | **Logos and plates** | Stickers laid over the bodywork without distortion; images mapped onto flat parts such as licence plates. |
 | **Textured models** | glTF import with textures (dashboard, gauges, interior); OBJ import with optional use of the `.mtl` file. |
@@ -98,8 +99,9 @@ to attach to the GitHub release.
 
 ## Getting started
 
-1. **Open a model**: **File › New project from a 3D model**, then choose a
-   `.gltf`, `.glb` or `.obj` file.
+1. **Open a model**: pick a car in **File › Car library** (`Ctrl+B`), or use
+   **File › New project from a 3D model** and choose a `.gltf`, `.glb` or `.obj`
+   file. You can also drop a model onto the window.
 2. **Customize**: click a part in the 3D view and change its material in the
    **Material** panel.
 3. **Check**: the **Realistic preview** tab shows the final result from the
@@ -108,6 +110,33 @@ to attach to the GitHub release.
 5. **Install**: insert the head unit's SD card, then click **Copy to SD card**.
 
 ## Guide
+
+### Car library
+
+**File › Car library** (`Ctrl+B`) shows every car of the library as a cover,
+with a search field. Double-click a car, or select it and click **Create
+project**, to start a project with its model.
+
+The library is a folder with one sub-folder per car: the folder name is the car
+name, and it contains the model (`.glb`, `.gltf` or `.obj`) and a `cover.jpg`
+preview. **Open the library folder** opens it directly:
+
+| Edition | Library folder |
+|---|---|
+| Installed | `Documents\HyStudio\models` |
+| From source | `models` next to `hystudio.py` |
+
+When no project is available at startup, HyStudio opens the library on its own.
+
+### Opening projects
+
+Projects are saved as `.hysp` files. Besides **File › Open project**, you can:
+
+- double-click a `.hysp` file, once the installer option **Open .hysp project
+  files with HyStudio** is ticked (it is by default);
+- drop a `.hysp` file onto `HyStudio.exe` or its shortcut;
+- drop a `.hysp` file onto the HyStudio window, or a 3D model to start a new
+  project.
 
 ### Materials
 

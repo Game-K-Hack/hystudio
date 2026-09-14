@@ -3,6 +3,19 @@
 All notable changes to HyStudio are listed here. Versions follow
 [Semantic Versioning](https://semver.org/).
 
+## [1.1.0] - 2026-09-14
+
+### Added
+
+- Car library (File › Car library, `Ctrl+B`): one folder per car with its model and a `cover.jpg`, shown as a searchable grid; double-click creates the project.
+- Open a project by double-clicking a `.hysp` file or dropping it onto `HyStudio.exe`.
+- Drag and drop onto the window: a project opens, a 3D model starts a new project.
+- Installer option to open `.hysp` files with HyStudio by default.
+
+### Fixed
+
+- Replacing a glTF model with a new version no longer shows the textures of the previous one.
+
 ## [1.0.0] - 2026-09-14
 
 First public release.
@@ -27,4 +40,5 @@ First public release.
 - Update check at startup and one-click update that keeps projects, models and cache.
 - Version shown in the window title and in the About dialog.
 
-[1.0.0]: https://github.com/Game-K-Hack/hystudio/releases/tag/v1.0.0
+[1.1.0]: https://github.com/Game-K-Hack/hystudio/releases/tag/1.1.0
+[1.0.0]: https://github.com/Game-K-Hack/hystudio/releases/tag/1.0.0
