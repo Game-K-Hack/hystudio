@@ -47,8 +47,8 @@ def system_language():
 
 
 def _settings():
-    from PySide6.QtCore import QSettings
-    return QSettings("HyStudio", "HyStudio")
+    from .paths import settings
+    return settings()
 
 
 def saved_choice():

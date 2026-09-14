@@ -10,6 +10,10 @@
 
 Pour l'exe installe, rien de l'utilisateur ne vit dans le dossier du logiciel :
 une mise a jour remplace ce dossier sans toucher aux projets, modeles et cache.
+
+Version portable (fichier portable.txt a cote de HyStudio.exe) : tout reste dans
+le dossier du logiciel, projets, cache et reglages (HyStudio.ini), rien dans
+Documents, AppData ni le registre.
   REPO       depot hyundev s'il entoure le logiciel (Blender portable dans tools/,
              modele de la i20 dans interface/), sinon None
 """
@@ -19,6 +23,7 @@ FROZEN = bool(getattr(sys, "frozen", False))
 SOURCES = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 RESOURCES = getattr(sys, "_MEIPASS", SOURCES)
 APP_DIR = os.path.dirname(os.path.abspath(sys.executable)) if FROZEN else SOURCES
+PORTABLE = FROZEN and os.path.isfile(os.path.join(APP_DIR, "portable.txt"))
 
 
 def _find_repo():
@@ -57,7 +62,11 @@ def _documents():
     return os.path.join(os.path.expanduser("~"), "Documents")
 
 
-if FROZEN:
+if PORTABLE:
+    CACHE = os.path.join(APP_DIR, "cache")
+    USER_HOME = APP_DIR
+    PROJECTS = os.path.join(APP_DIR, "projets")
+elif FROZEN:
     CACHE = os.path.join(os.environ.get("LOCALAPPDATA") or os.path.expanduser("~"), "HyStudio", "cache")
     USER_HOME = os.path.join(_documents(), "HyStudio")
     # projets/ d'une ancienne version en archive (a cote de l'exe), ceux des sources pour un exe
@@ -73,6 +82,21 @@ else:
 
 WORK = os.path.join(CACHE, "travail")
 RENDERER = os.path.join(RESOURCES, "blender", "render_project.py")
+
+
+def settings():
+    """Reglages (langue, version ignoree) : registre, ou HyStudio.ini pour la version portable."""
+    from PySide6.QtCore import QSettings
+    if PORTABLE:
+        return QSettings(os.path.join(APP_DIR, "HyStudio.ini"), QSettings.IniFormat)
+    return QSettings("HyStudio", "HyStudio")
+
+
+def summary():
+    """Emplacements utilises, pour le diagnostic (--diagnostic)."""
+    return {"frozen": FROZEN, "portable": PORTABLE, "app_dir": APP_DIR, "resources": RESOURCES,
+            "projects": PROJECTS, "cache": CACHE, "user_home": USER_HOME, "repo": REPO,
+            "blender": find_blender(), "viewer": viewer_exe()}
 
 
 def viewer_exe():
