@@ -9,8 +9,5 @@ __pycache__/
 # Exécutables : jamais dans git, ils vont dans les Releases
 dist/
 
-models/
-projets/
-
 # Donnees regenerees : geometrie, textures, rendus en cours
 cache/
