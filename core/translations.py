@@ -62,6 +62,18 @@ TABLE = {
         "計算またはコピーの実行中です。選択した言語は次回の起動時に適用されます。",
         "계산 또는 복사가 진행 중입니다. 선택한 언어는 다음 시작 시 적용됩니다."),
 
+    "À propos de HyStudio": L("About HyStudio", "Acerca de HyStudio", "Über HyStudio", "Informazioni su HyStudio",
+                               "О программе HyStudio", "关于 HyStudio", "HyStudio について", "HyStudio 정보"),
+    "Personnalisez un modèle 3D de voiture et produisez sa rotation 360° pour l'autoradio.": L(
+        "Customize a 3D car model and produce its 360° rotation for the head unit.",
+        "Personalice un modelo 3D de coche y genere su rotación de 360° para la radio.",
+        "Passen Sie ein 3D-Automodell an und erzeugen Sie seine 360°-Drehung für das Autoradio.",
+        "Personalizza un modello 3D di auto e produci la sua rotazione a 360° per l'autoradio.",
+        "Настройте 3D-модель автомобиля и создайте её 360° вращение для магнитолы.",
+        "自定义 3D 汽车模型，并为车机生成 360° 旋转动画。",
+        "車の 3D モデルをカスタマイズし、カーナビ用の 360° 回転を作成します。",
+        "자동차 3D 모델을 꾸미고 카오디오용 360° 회전을 만듭니다."),
+
     # ------------------------------------------------------------ fenetre
     "Prêt": L("Ready", "Listo", "Bereit", "Pronto", "Готово", "就绪", "準備完了", "준비됨"),
     "Vue 3D": L("3D view", "Vista 3D", "3D-Ansicht", "Vista 3D", "3D-вид", "3D 视图", "3D ビュー", "3D 보기"),

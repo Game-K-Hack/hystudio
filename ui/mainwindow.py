@@ -12,6 +12,7 @@ from PySide6.QtWidgets import (
 
 from core import device, gltfmodel, i18n, mtl, objmodel, paths, pipeline, presets, project as projmod
 from core.i18n import tr, tr_label
+from core.version import REPO_URL, VERSION
 from ui.viewport import Viewport
 
 PROJECTS = paths.PROJECTS
@@ -560,6 +561,22 @@ class MainWindow(QMainWindow):
             if code == i18n.AUTO:
                 lang.addSeparator()
 
+        help_menu = self.menuBar().addMenu("&?")
+        about = QAction(tr("À propos de HyStudio"), self)
+        about.triggered.connect(self.show_about)
+        help_menu.addAction(about)
+
+    def show_about(self):
+        box = QMessageBox(self)
+        box.setWindowTitle(tr("À propos de HyStudio"))
+        box.setIconPixmap(self.windowIcon().pixmap(72, 72))
+        box.setTextFormat(Qt.RichText)
+        box.setText(f"<h3>HyStudio {VERSION}</h3>"
+                    f"<p>{tr('Personnalisez un modèle 3D de voiture et produisez sa rotation 360° pour l\'autoradio.')}</p>"
+                    f"<p><a href='{REPO_URL}'>{REPO_URL.replace('https://', '')}</a></p>")
+        box.setTextInteractionFlags(Qt.TextBrowserInteraction)
+        box.exec()
+
     def _build_preview_tab(self):
         w = QWidget(); lay = QVBoxLayout(w)
         bar = QHBoxLayout()
@@ -821,7 +838,7 @@ class MainWindow(QMainWindow):
 
     def update_title(self):
         name = self.project.name if self.project else ""
-        self.setWindowTitle(f"HyStudio — {name}{' *' if self.dirty else ''}")
+        self.setWindowTitle(f"HyStudio {VERSION} — {name}{' *' if self.dirty else ''}")
 
     def confirm_discard(self):
         if not self.dirty:

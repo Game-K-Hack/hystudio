@@ -52,16 +52,44 @@ def icon(path):
     Image.open(LOGO).save(path, sizes=[(16, 16), (24, 24), (32, 32), (48, 48), (64, 64), (128, 128), (256, 256)])
 
 
+def version_file(path):
+    """Ressource de version Windows (Proprietes > Details de HyStudio.exe)."""
+    sys.path.insert(0, HERE)
+    from core.version import VERSION
+    nums = tuple(int(x) for x in VERSION.split(".")) + (0,) * (4 - len(VERSION.split(".")))
+    text = f"""VSVersionInfo(
+  ffi=FixedFileInfo(filevers={nums}, prodvers={nums}, mask=0x3f, flags=0x0, OS=0x40004,
+                    fileType=0x1, subtype=0x0, date=(0, 0)),
+  kids=[
+    StringFileInfo([StringTable('040C04B0', [
+      StringStruct('CompanyName', 'Game-K-Hack'),
+      StringStruct('FileDescription', 'HyStudio'),
+      StringStruct('FileVersion', '{VERSION}'),
+      StringStruct('InternalName', 'HyStudio'),
+      StringStruct('OriginalFilename', 'HyStudio.exe'),
+      StringStruct('ProductName', 'HyStudio'),
+      StringStruct('ProductVersion', '{VERSION}')])]),
+    VarFileInfo([VarStruct('Translation', [1036, 1200])])
+  ]
+)
+"""
+    with open(path, "w", encoding="utf-8") as f:
+        f.write(text)
+    return VERSION
+
+
 def main():
     import PyInstaller.__main__
     os.makedirs(BUILD, exist_ok=True)
     ico = os.path.join(BUILD, "hystudio.ico")
     icon(ico)
+    vfile = os.path.join(BUILD, "version.txt")
+    version = version_file(vfile)
     sep = os.pathsep
     args = [
         os.path.join(HERE, "hystudio.py"),
         "--name", "HyStudio", "--onedir", "--windowed", "--noconfirm", "--clean",
-        "--icon", ico,
+        "--icon", ico, "--version-file", vfile,
         "--distpath", DIST, "--workpath", BUILD, "--specpath", BUILD,
         "--paths", HERE,
         "--add-data", f"{os.path.join(HERE, 'blender', 'render_project.py')}{sep}blender",
@@ -78,7 +106,9 @@ def main():
     PyInstaller.__main__.run(args)
     exe = os.path.join(DIST, "HyStudio", "HyStudio.exe")
     size = sum(os.path.getsize(os.path.join(r, f)) for r, _, fs in os.walk(os.path.dirname(exe)) for f in fs)
-    print(f"\nHyStudio.exe : {exe}\ntaille du dossier : {size / 1e6:.0f} Mo")
+    # archive a joindre a la release GitHub
+    archive = shutil.make_archive(os.path.join(DIST, f"HyStudio-{version}-windows-x64"), "zip", DIST, "HyStudio")
+    print(f"\nHyStudio.exe : {exe}\ntaille du dossier : {size / 1e6:.0f} Mo\narchive : {archive}")
 
 
 if __name__ == "__main__":
