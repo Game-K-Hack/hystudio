@@ -75,6 +75,23 @@ WORK = os.path.join(CACHE, "travail")
 RENDERER = os.path.join(RESOURCES, "blender", "render_project.py")
 
 
+def library_home():
+    """Dossier ou l'utilisateur range sa bibliotheque de voitures."""
+    return os.path.join(USER_HOME, "models") if FROZEN else os.path.join(SOURCES, "models")
+
+
+def library_dirs():
+    """Dossiers de la bibliotheque : celui de l'utilisateur, puis ceux livres ou du depot s'ils existent."""
+    dirs = [library_home(), os.path.join(APP_DIR, "models")]
+    if REPO:
+        dirs.append(os.path.join(REPO, "hystudio", "models"))
+    out = []
+    for d in dirs:
+        if os.path.normcase(os.path.abspath(d)) not in [os.path.normcase(os.path.abspath(x)) for x in out]:
+            out.append(d)
+    return out
+
+
 def viewer_exe():
     """Visionneuse de l'autoradio : livree avec l'exe, sinon celle du depot."""
     for p in (os.path.join(RESOURCES, "i20view", "i20view.exe"),

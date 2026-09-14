@@ -17,6 +17,20 @@ from PySide6.QtWidgets import QApplication             # noqa: E402
 from ui.viewport import set_default_format            # noqa: E402
 
 
+def file_argument():
+    """Fichier passe par Windows : double-clic sur un .hysp (association) ou fichier glisse sur l'exe."""
+    skip = {"--capture": 1}
+    args, i = sys.argv[1:], 0
+    while i < len(args):
+        a = args[i]
+        if a in skip:
+            i += skip[a] + 1; continue
+        if not a.startswith("--") and os.path.isfile(a):
+            return os.path.abspath(a)
+        i += 1
+    return None
+
+
 def main():
     set_default_format()                               # OpenGL 3.3 avant toute fenetre
     if os.name == "nt":
@@ -38,7 +52,7 @@ def main():
     from core import i18n
     i18n.init()                                        # choix enregistre, sinon langue du systeme
     from ui.mainwindow import MainWindow, _WINDOWS
-    win = MainWindow()
+    win = MainWindow(open_path=file_argument())
     _WINDOWS.append(win)
     win.show()
 

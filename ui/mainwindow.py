@@ -452,8 +452,9 @@ class MaterialPanel(QWidget):
 # ===================================================================== fenetre
 
 class MainWindow(QMainWindow):
-    def __init__(self, state=None):
+    def __init__(self, state=None, open_path=None):
         super().__init__()
+        self.setAcceptDrops(True)                  # projet ou modele glisse sur la fenetre
         self._threads = []
         self.sd_busy = False
         self._swapping = False
@@ -499,7 +500,10 @@ class MainWindow(QMainWindow):
         if state:
             QTimer.singleShot(0, lambda: self._restore(state))
         else:
-            QTimer.singleShot(0, self.open_startup_project)
+            if open_path:                          # double-clic sur un .hysp, ou fichier glisse sur l'exe
+                QTimer.singleShot(0, lambda: self.open_file(open_path))
+            else:
+                QTimer.singleShot(0, self.open_startup_project)
             # verification discrete des mises a jour : exe, ou essai via HYSTUDIO_UPDATE_URL
             if updater.can_install() or os.environ.get("HYSTUDIO_UPDATE_URL"):
                 QTimer.singleShot(3000, self.check_updates)
@@ -523,6 +527,7 @@ class MainWindow(QMainWindow):
         m = self.menuBar().addMenu(tr("&Fichier"))
         for text, slot, key in (
                 (tr("Nouveau projet depuis un modèle 3D…"), self.new_project, QKeySequence.New),
+                (tr("Bibliothèque de voitures…"), self.open_library, QKeySequence("Ctrl+B")),
                 (tr("Ouvrir un projet…"), self.open_project, QKeySequence.Open),
                 (tr("Enregistrer"), self.save_project, QKeySequence.Save),
                 (tr("Enregistrer sous…"), self.save_project_as, QKeySequence.SaveAs),
@@ -767,6 +772,9 @@ class MainWindow(QMainWindow):
             self.say(tr("Projet converti au format .hysp : {path}", path=path))
         elif not projmod.i20_available():          # pas de modele i20 : on attend un projet
             self.say(tr("Ouvrez un projet ou créez-en un depuis un modèle 3D (menu Fichier)."))
+            from core import library
+            if library.scan():                     # une bibliotheque existe : on la propose d'emblee
+                QTimer.singleShot(300, self.open_library)
         else:
             p = projmod.i20_profile()
             p.save(path)
@@ -817,15 +825,63 @@ class MainWindow(QMainWindow):
                 self, tr("Modèle non découpé en pièces"),
                 tr("NON_DECOUPE", name=os.path.basename(model.path)))
 
-    def new_project(self):
+    # ------------------------------------------------------------ ouverture de fichiers
+    PROJECT_SUFFIXES = (projmod.EXTENSION,) + projmod.OLD_EXTENSIONS
+    MODEL_SUFFIXES = (".glb", ".gltf", ".obj")
+
+    def open_file(self, path):
+        """Projet (.hysp...) : ouverture ; modele 3D : nouveau projet. Double-clic, glisser-deposer, ligne de commande."""
+        ext = os.path.splitext(path)[1].lower()
+        if ext in self.PROJECT_SUFFIXES:
+            if self.confirm_discard():
+                self.open_project_file(path)
+        elif ext in self.MODEL_SUFFIXES:
+            self.new_project(path)
+        else:
+            QMessageBox.warning(self, tr("Ouverture"), tr("Format de fichier non pris en charge : {file}",
+                                                          file=os.path.basename(path)))
+
+    def open_project_file(self, path):
+        try:
+            self.set_project(projmod.Project.load(path))
+        except Exception as e:
+            QMessageBox.critical(self, tr("Ouverture"), str(e))
+
+    def _dropped_file(self, event):
+        urls = event.mimeData().urls() if event.mimeData().hasUrls() else []
+        for u in urls:
+            p = u.toLocalFile()
+            if os.path.isfile(p) and os.path.splitext(p)[1].lower() in self.PROJECT_SUFFIXES + self.MODEL_SUFFIXES:
+                return p
+        return None
+
+    def dragEnterEvent(self, event):
+        if self._dropped_file(event):
+            event.acceptProposedAction()
+
+    def dropEvent(self, event):
+        path = self._dropped_file(event)
+        if path:
+            event.acceptProposedAction()
+            QTimer.singleShot(0, lambda: self.open_file(path))
+
+    def open_library(self):
+        from ui.librarydialog import LibraryDialog
+        dlg = LibraryDialog(self)
+        if dlg.exec() and dlg.chosen:
+            self.new_project(dlg.chosen.model, dlg.chosen.name)
+
+    def new_project(self, model_path=None, name=None):
         if not self.confirm_discard():
             return
-        f, _ = QFileDialog.getOpenFileName(self, tr("Modèle 3D"), HOME,
-                                           tr("Modèles 3D") + " (*.obj *.gltf *.glb);;glTF (*.gltf *.glb);;OBJ (*.obj)")
+        f = model_path
+        if not f:
+            f, _ = QFileDialog.getOpenFileName(self, tr("Modèle 3D"), HOME,
+                                               tr("Modèles 3D") + " (*.obj *.gltf *.glb);;glTF (*.gltf *.glb);;OBJ (*.obj)")
         if not f:
             return
         p = projmod.Project()
-        p.name = os.path.splitext(os.path.basename(f))[0]
+        p.name = name or os.path.splitext(os.path.basename(f))[0]
         p.model = f
         # matieres de depart deduites des noms de materiaux courants
         m = objmodel.load(f)
@@ -904,10 +960,7 @@ class MainWindow(QMainWindow):
             return
         f, _ = QFileDialog.getOpenFileName(self, tr("Ouvrir un projet"), PROJECTS, project_filter())
         if f:
-            try:
-                self.set_project(projmod.Project.load(f))
-            except Exception as e:
-                QMessageBox.critical(self, tr("Ouverture"), str(e))
+            self.open_project_file(f)
 
     def save_project(self):
         if not self.project.path:

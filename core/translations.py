@@ -139,6 +139,46 @@ TABLE = {
         "Сначала дождитесь окончания расчёта или копирования.", "请先完成正在进行的计算或复制。",
         "実行中の計算またはコピーを先に終えてください。", "진행 중인 계산이나 복사를 먼저 끝내세요."),
 
+    "Bibliothèque de voitures": L("Car library", "Biblioteca de coches", "Fahrzeugbibliothek", "Libreria di auto",
+                                   "Библиотека автомобилей", "汽车库", "車のライブラリ", "자동차 라이브러리"),
+    "Bibliothèque de voitures…": L("Car library…", "Biblioteca de coches…", "Fahrzeugbibliothek…", "Libreria di auto…",
+                                    "Библиотека автомобилей…", "汽车库…", "車のライブラリ…", "자동차 라이브러리…"),
+    "Rechercher une voiture…": L("Search for a car…", "Buscar un coche…", "Fahrzeug suchen…", "Cerca un'auto…",
+                                  "Поиск автомобиля…", "搜索汽车…", "車を検索…", "자동차 검색…"),
+    "Actualiser": L("Refresh", "Actualizar", "Aktualisieren", "Aggiorna", "Обновить", "刷新", "更新", "새로 고침"),
+    "Ouvrir le dossier de la bibliothèque": L(
+        "Open the library folder", "Abrir la carpeta de la biblioteca", "Bibliotheksordner öffnen",
+        "Apri la cartella della libreria", "Открыть папку библиотеки", "打开库文件夹", "ライブラリのフォルダーを開く",
+        "라이브러리 폴더 열기"),
+    "Créer le projet": L("Create project", "Crear el proyecto", "Projekt erstellen", "Crea il progetto",
+                         "Создать проект", "创建项目", "プロジェクトを作成", "프로젝트 만들기"),
+    "Fermer": L("Close", "Cerrar", "Schließen", "Chiudi", "Закрыть", "关闭", "閉じる", "닫기"),
+    "{n} voiture(s)": L("{n} car(s)", "{n} coche(s)", "{n} Fahrzeug(e)", "{n} auto", "Автомобилей: {n}", "{n} 辆汽车",
+                        "{n} 台", "자동차 {n}대"),
+    "BIBLIOTHEQUE_VIDE": L(
+        "The library is empty.\n\nAdd one folder per car to {folder}: name the folder after the car and put the "
+        "model (.glb, .gltf or .obj) and a cover.jpg preview image inside.",
+        "La biblioteca está vacía.\n\nAñada una carpeta por coche en {folder}: póngale el nombre del coche y "
+        "coloque dentro el modelo (.glb, .gltf u .obj) y una imagen de vista previa cover.jpg.",
+        "Die Bibliothek ist leer.\n\nLegen Sie in {folder} einen Ordner pro Fahrzeug an: benennen Sie ihn nach dem "
+        "Fahrzeug und legen Sie das Modell (.glb, .gltf oder .obj) und ein Vorschaubild cover.jpg hinein.",
+        "La libreria è vuota.\n\nAggiungi una cartella per auto in {folder}: dalle il nome dell'auto e mettici il "
+        "modello (.glb, .gltf o .obj) e un'immagine di anteprima cover.jpg.",
+        "Библиотека пуста.\n\nДобавьте в {folder} по папке на автомобиль: назовите папку как автомобиль и положите "
+        "в неё модель (.glb, .gltf или .obj) и изображение предпросмотра cover.jpg.",
+        "库为空。\n\n请在 {folder} 中为每辆车添加一个文件夹：以车名命名，并放入模型（.glb、.gltf 或 .obj）和预览图 cover.jpg。",
+        "ライブラリは空です。\n\n{folder} に車ごとのフォルダーを追加してください。フォルダー名を車の名前にし、"
+        "モデル（.glb、.gltf、.obj）とプレビュー画像 cover.jpg を入れます。",
+        "라이브러리가 비어 있습니다.\n\n{folder}에 자동차마다 폴더를 추가하세요. 폴더 이름을 자동차 이름으로 하고 "
+        "모델(.glb, .gltf, .obj)과 미리보기 이미지 cover.jpg를 넣으세요.",
+        fr="La bibliothèque est vide.\n\nAjoutez un dossier par voiture dans {folder} : nommez-le comme la voiture "
+           "et placez-y le modèle (.glb, .gltf ou .obj) et une image d'aperçu cover.jpg."),
+    "Format de fichier non pris en charge : {file}": L(
+        "Unsupported file format: {file}", "Formato de archivo no compatible: {file}",
+        "Nicht unterstütztes Dateiformat: {file}", "Formato di file non supportato: {file}",
+        "Неподдерживаемый формат файла: {file}", "不支持的文件格式：{file}", "対応していないファイル形式です：{file}",
+        "지원하지 않는 파일 형식: {file}"),
+
     # ------------------------------------------------------------ fenetre
     "Prêt": L("Ready", "Listo", "Bereit", "Pronto", "Готово", "就绪", "準備完了", "준비됨"),
     "Vue 3D": L("3D view", "Vista 3D", "3D-Ansicht", "Vista 3D", "3D-вид", "3D 视图", "3D ビュー", "3D 보기"),
