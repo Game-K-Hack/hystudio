@@ -10,13 +10,13 @@ from PySide6.QtWidgets import (
     QPlainTextEdit, QProgressBar, QPushButton, QRadioButton, QSpinBox, QTabWidget,
     QTreeWidget, QTreeWidgetItem, QVBoxLayout, QWidget)
 
-from core import device, gltfmodel, i18n, mtl, objmodel, paths, pipeline, presets, project as projmod
+from core import device, gltfmodel, i18n, mtl, objmodel, paths, pipeline, presets, project as projmod, updater
 from core.i18n import tr, tr_label
 from core.version import REPO_URL, VERSION
 from ui.viewport import Viewport
 
 PROJECTS = paths.PROJECTS
-HOME = paths.REPO or os.path.expanduser("~")             # dossier de depart des boites « Ouvrir »
+HOME = paths.USER_HOME                                   # dossier de depart des boites « Ouvrir »
 # les anciens projets (.hyproj, .carproj de Car Studio) restent ouvrables
 PROJECT_EXTS = "(*.hysp *.hyproj *.carproj)"
 PRECISIONS = [(2, 180), (1, 360), (0.5, 720)]            # (degres par vue, nombre de vues)
@@ -500,6 +500,9 @@ class MainWindow(QMainWindow):
             QTimer.singleShot(0, lambda: self._restore(state))
         else:
             QTimer.singleShot(0, self.open_startup_project)
+            # verification discrete des mises a jour : exe, ou essai via HYSTUDIO_UPDATE_URL
+            if updater.can_install() or os.environ.get("HYSTUDIO_UPDATE_URL"):
+                QTimer.singleShot(3000, self.check_updates)
 
     # ------------------------------------------------------------ construction
     def _size_docks(self):
@@ -562,9 +565,100 @@ class MainWindow(QMainWindow):
                 lang.addSeparator()
 
         help_menu = self.menuBar().addMenu("&?")
+        check = QAction(tr("Rechercher des mises à jour…"), self)
+        check.triggered.connect(lambda: self.check_updates(quiet=False))
+        help_menu.addAction(check)
         about = QAction(tr("À propos de HyStudio"), self)
         about.triggered.connect(self.show_about)
         help_menu.addAction(about)
+
+    # ------------------------------------------------------------ mises a jour
+    def check_updates(self, quiet=True):
+        """Derniere release GitHub, en arriere-plan. quiet : au demarrage, rien si a jour ou hors ligne."""
+        def done(release):
+            from PySide6.QtCore import QSettings
+            if release is None:
+                if not quiet:
+                    online = getattr(self, "_update_reachable", True)
+                    QMessageBox.information(self, tr("Mises à jour"),
+                                            tr("HyStudio est à jour (version {v}).", v=VERSION) if online
+                                            else tr("Impossible de vérifier les mises à jour : pas de connexion à GitHub."))
+                return
+            if quiet and QSettings("HyStudio", "HyStudio").value("maj/ignoree", "") == release.version:
+                return
+            self._offer_update(release)
+
+        def job(w):
+            self._update_reachable = True
+            release = updater.check()
+            if release is None and not quiet:
+                import urllib.request
+                try:
+                    urllib.request.urlopen(updater.API, timeout=updater.TIMEOUT).close()
+                except OSError:
+                    self._update_reachable = False
+            return release
+
+        run_async(self, job, done, lambda e: None)
+
+    def _offer_update(self, release):
+        from PySide6.QtCore import QSettings
+        box = QMessageBox(self)
+        box.setWindowTitle(tr("Mise à jour disponible"))
+        box.setIconPixmap(self.windowIcon().pixmap(64, 64))
+        box.setText(f"<h3>HyStudio {release.version}</h3>")
+        box.setInformativeText(tr("MAJ_DISPO", new=release.version, cur=VERSION))
+        if release.notes:
+            box.setDetailedText(release.notes)
+        if updater.can_install():
+            go = box.addButton(tr("Mettre à jour"), QMessageBox.AcceptRole)
+        else:                                      # depuis les sources : pas d'installateur a lancer
+            go = box.addButton(tr("Ouvrir la page de téléchargement"), QMessageBox.AcceptRole)
+        box.addButton(tr("Plus tard"), QMessageBox.RejectRole)
+        skip = box.addButton(tr("Ignorer cette version"), QMessageBox.DestructiveRole)
+        box.setDefaultButton(go)
+        box.exec()
+        if box.clickedButton() is skip:
+            QSettings("HyStudio", "HyStudio").setValue("maj/ignoree", release.version)
+        elif box.clickedButton() is go:
+            if updater.can_install():
+                self._install_update(release)
+            else:
+                from PySide6.QtGui import QDesktopServices
+                from PySide6.QtCore import QUrl
+                QDesktopServices.openUrl(QUrl(release.page))
+
+    def _install_update(self, release):
+        if self.gen_worker or self.preview_worker or self.sd_busy:
+            QMessageBox.information(self, tr("Mise à jour disponible"),
+                                    tr("Terminez d'abord le calcul ou la copie en cours."))
+            return
+        if not self.confirm_discard():             # projet enregistre (ou abandonne) avant de fermer
+            return
+        from PySide6.QtWidgets import QProgressDialog
+        dlg = QProgressDialog(tr("Téléchargement de la mise à jour…"), tr("Interrompre"), 0, 100, self)
+        dlg.setWindowTitle(tr("Mise à jour disponible"))
+        dlg.setMinimumDuration(0)
+        dlg.setValue(0)
+        worker = {}
+
+        def job(w):
+            return updater.download(release, progress=lambda f: w.progress.emit(int(f * 100)),
+                                    cancelled=lambda: w.cancelled)
+
+        def done(path):
+            dlg.close()
+            updater.launch_installer(path)
+            self.dirty = False                     # deja confirme ci-dessus
+            self.close()
+
+        def fail(msg):
+            dlg.close()
+            if not msg.startswith(tr("Interrompu.")):
+                QMessageBox.warning(self, tr("Mise à jour disponible"), msg.split("\n\n")[0])
+
+        worker["w"] = run_async(self, job, done, fail, lambda v: dlg.setValue(v))
+        dlg.canceled.connect(lambda: setattr(worker["w"], "cancelled", True))
 
     def show_about(self):
         box = QMessageBox(self)

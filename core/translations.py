@@ -74,6 +74,71 @@ TABLE = {
         "車の 3D モデルをカスタマイズし、カーナビ用の 360° 回転を作成します。",
         "자동차 3D 모델을 꾸미고 카오디오용 360° 회전을 만듭니다."),
 
+    "Rechercher des mises à jour…": L(
+        "Check for updates…", "Buscar actualizaciones…", "Nach Updates suchen…", "Cerca aggiornamenti…",
+        "Проверить обновления…", "检查更新…", "更新を確認…", "업데이트 확인…"),
+    "Mises à jour": L("Updates", "Actualizaciones", "Updates", "Aggiornamenti", "Обновления", "更新", "更新", "업데이트"),
+    "Mise à jour disponible": L(
+        "Update available", "Actualización disponible", "Update verfügbar", "Aggiornamento disponibile",
+        "Доступно обновление", "有可用更新", "更新があります", "업데이트 가능"),
+    "MAJ_DISPO": L(
+        "A new version of HyStudio is available (you are using {cur}): version {new}.\n\n"
+        "Your projects and models are kept: only the software is replaced. HyStudio will restart once installed.",
+        "Hay una nueva versión de HyStudio disponible (usa la {cur}): versión {new}.\n\n"
+        "Sus proyectos y modelos se conservan: solo se sustituye el programa. HyStudio se reiniciará al terminar.",
+        "Eine neue HyStudio-Version ist verfügbar (Sie nutzen {cur}): Version {new}.\n\n"
+        "Ihre Projekte und Modelle bleiben erhalten: Nur die Software wird ersetzt. HyStudio startet danach neu.",
+        "È disponibile una nuova versione di HyStudio (in uso: {cur}): versione {new}.\n\n"
+        "Progetti e modelli vengono conservati: viene sostituito solo il programma. HyStudio si riavvierà al termine.",
+        "Доступна новая версия HyStudio (у вас {cur}): версия {new}.\n\n"
+        "Ваши проекты и модели сохранятся: заменяется только программа. После установки HyStudio перезапустится.",
+        "HyStudio 有新版本可用（当前 {cur}）：{new} 版。\n\n您的项目和模型会保留，只替换软件本身。安装完成后 HyStudio 将重新启动。",
+        "HyStudio の新しいバージョンがあります（現在 {cur}）：バージョン {new}。\n\n"
+        "プロジェクトとモデルはそのまま残り、ソフトウェアだけが置き換えられます。インストール後に HyStudio が再起動します。",
+        "새 HyStudio 버전을 사용할 수 있습니다 (현재 {cur}): 버전 {new}.\n\n"
+        "프로젝트와 모델은 그대로 유지되며 프로그램만 교체됩니다. 설치 후 HyStudio가 다시 시작됩니다.",
+        fr="Une nouvelle version de HyStudio est disponible (vous utilisez la {cur}) : version {new}.\n\n"
+           "Vos projets et vos modèles sont conservés : seul le logiciel est remplacé. "
+           "HyStudio redémarrera une fois installé."),
+    "Mettre à jour": L("Update", "Actualizar", "Aktualisieren", "Aggiorna", "Обновить", "更新", "更新する", "업데이트"),
+    "Plus tard": L("Later", "Más tarde", "Später", "Più tardi", "Позже", "稍后", "後で", "나중에"),
+    "Ignorer cette version": L(
+        "Skip this version", "Omitir esta versión", "Diese Version überspringen", "Ignora questa versione",
+        "Пропустить эту версию", "跳过此版本", "このバージョンをスキップ", "이 버전 건너뛰기"),
+    "Ouvrir la page de téléchargement": L(
+        "Open the download page", "Abrir la página de descarga", "Download-Seite öffnen", "Apri la pagina di download",
+        "Открыть страницу загрузки", "打开下载页面", "ダウンロードページを開く", "다운로드 페이지 열기"),
+    "Téléchargement de la mise à jour…": L(
+        "Downloading the update…", "Descargando la actualización…", "Update wird heruntergeladen…",
+        "Download dell'aggiornamento…", "Загрузка обновления…", "正在下载更新…", "更新をダウンロード中…",
+        "업데이트 다운로드 중…"),
+    "HyStudio est à jour (version {v}).": L(
+        "HyStudio is up to date (version {v}).", "HyStudio está actualizado (versión {v}).",
+        "HyStudio ist aktuell (Version {v}).", "HyStudio è aggiornato (versione {v}).",
+        "HyStudio обновлён (версия {v}).", "HyStudio 已是最新版本（{v}）。", "HyStudio は最新です（バージョン {v}）。",
+        "HyStudio가 최신 버전입니다 (버전 {v})."),
+    "Impossible de vérifier les mises à jour : pas de connexion à GitHub.": L(
+        "Cannot check for updates: no connection to GitHub.",
+        "No se pueden buscar actualizaciones: sin conexión con GitHub.",
+        "Updates können nicht geprüft werden: keine Verbindung zu GitHub.",
+        "Impossibile cercare aggiornamenti: nessuna connessione a GitHub.",
+        "Не удалось проверить обновления: нет соединения с GitHub.",
+        "无法检查更新：无法连接 GitHub。", "更新を確認できません：GitHub に接続できません。",
+        "업데이트를 확인할 수 없습니다: GitHub에 연결할 수 없습니다."),
+    "Le téléchargement de la mise à jour est incomplet ou altéré. Réessayez plus tard.": L(
+        "The update download is incomplete or corrupted. Please try again later.",
+        "La descarga de la actualización está incompleta o dañada. Inténtelo más tarde.",
+        "Der Update-Download ist unvollständig oder beschädigt. Bitte später erneut versuchen.",
+        "Il download dell'aggiornamento è incompleto o danneggiato. Riprova più tardi.",
+        "Загрузка обновления неполная или повреждена. Повторите попытку позже.",
+        "更新下载不完整或已损坏。请稍后重试。", "更新のダウンロードが不完全か破損しています。後でもう一度お試しください。",
+        "업데이트 다운로드가 불완전하거나 손상되었습니다. 나중에 다시 시도하세요."),
+    "Terminez d'abord le calcul ou la copie en cours.": L(
+        "Finish the render or copy in progress first.", "Termine primero el cálculo o la copia en curso.",
+        "Beenden Sie zuerst die laufende Berechnung oder Kopie.", "Termina prima il calcolo o la copia in corso.",
+        "Сначала дождитесь окончания расчёта или копирования.", "请先完成正在进行的计算或复制。",
+        "実行中の計算またはコピーを先に終えてください。", "진행 중인 계산이나 복사를 먼저 끝내세요."),
+
     # ------------------------------------------------------------ fenetre
     "Prêt": L("Ready", "Listo", "Bereit", "Pronto", "Готово", "就绪", "準備完了", "준비됨"),
     "Vue 3D": L("3D view", "Vista 3D", "3D-Ansicht", "Vista 3D", "3D-вид", "3D 视图", "3D ビュー", "3D 보기"),
