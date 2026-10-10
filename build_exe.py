@@ -36,16 +36,35 @@ LOGO = os.path.join(HERE, "ui", "hystudio.png")        # logo du logiciel : fene
 
 
 def draw_logo(path=LOGO):
-    """Pastille bleue « Hy », 256 px (regenere le PNG livre avec le logiciel)."""
+    """Icone du logiciel, 256 px : pastille bleue et lettre « S » (regenere le PNG
+    livre avec le logiciel). Meme dessin que les icones HyLink (« L ») et HyCAN
+    (« C ») : marge 8, rayon 50, Segoe UI Bold a la taille ou un « L » mesure
+    128 px, lettre centree sur sa boite. Le logo du README garde « Hy »."""
     from PIL import Image, ImageDraw, ImageFont
-    im = Image.new("RGBA", (256, 256), (0, 0, 0, 0))
-    d = ImageDraw.Draw(im)
-    d.rounded_rectangle((8, 8, 248, 248), 56, fill=(27, 94, 170, 255))
-    try:
-        font = ImageFont.truetype("C:/Windows/Fonts/segoeuib.ttf", 128)
-    except OSError:
-        font = ImageFont.load_default()
-    d.text((128, 132), "Hy", font=font, fill=(255, 255, 255, 255), anchor="mm")
+    size, margin, radius, cap, scale = 256, 8, 50, 128, 4
+    bleu = (27, 94, 170)
+
+    def glyphe(text, pts):
+        font = ImageFont.truetype("C:/Windows/Fonts/segoeuib.ttf", pts)
+        pad = pts
+        canvas = Image.new("L", (pts * len(text) * 2 + pad * 2, pts * 3), 0)
+        ImageDraw.Draw(canvas).text((pad, pad), text, font=font, fill=255)
+        return canvas.crop(canvas.getbbox())
+
+    big = Image.new("L", (size * scale, size * scale), 0)
+    ImageDraw.Draw(big).rounded_rectangle(
+        [margin * scale, margin * scale, (size - margin) * scale, (size - margin) * scale],
+        radius=radius * scale, fill=255)
+    im = Image.new("RGBA", (size, size), bleu + (255,))
+    im.putalpha(big.resize((size, size), Image.LANCZOS))
+
+    pts = round(400 * cap / glyphe("L", 400).size[1] * scale)
+    lettre = glyphe("S", pts)
+    lettre = lettre.resize((round(lettre.size[0] / scale), round(lettre.size[1] / scale)),
+                           Image.LANCZOS)
+    blanc = Image.new("RGBA", lettre.size, (255, 255, 255, 255))
+    blanc.putalpha(lettre)
+    im.alpha_composite(blanc, ((size - lettre.size[0]) // 2, (size - lettre.size[1]) // 2))
     im.save(path)
 
 
