@@ -3,6 +3,12 @@
 All notable changes to HyStudio are listed here. Versions follow
 [Semantic Versioning](https://semver.org/).
 
+## [1.1.1] - 2026-10-17
+
+### Fixed
+
+Project directory name
+
 ## [1.1.0] - 2026-09-14
 
 ### Added
