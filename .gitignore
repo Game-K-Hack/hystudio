@@ -11,3 +11,5 @@ dist/
 
 # Donnees regenerees : geometrie, textures, rendus en cours
 cache/
+
+projects/*.hysp

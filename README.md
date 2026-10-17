@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/logo_readme.png" alt="HyStudio" width="380">
+  <img src="docs/logo_readme.png" alt="HyStudio" height="128">
 </p>
 
 <p align="center">
@@ -70,7 +70,7 @@ HyStudio finds Blender automatically.
 | Data | Location |
 |---|---|
 | Application | `%LOCALAPPDATA%\Programs\HyStudio` |
-| Projects | `Documents\HyStudio\projets` |
+| Projects | `Documents\HyStudio\projects` |
 | Cache (recomputable) | `%LOCALAPPDATA%\HyStudio` |
 
 ### Updates

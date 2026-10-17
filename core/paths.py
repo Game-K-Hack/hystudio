@@ -61,15 +61,15 @@ if FROZEN:
     CACHE = os.path.join(os.environ.get("LOCALAPPDATA") or os.path.expanduser("~"), "HyStudio", "cache")
     USER_HOME = os.path.join(_documents(), "HyStudio")
     # projets/ d'une ancienne version en archive (a cote de l'exe), ceux des sources pour un exe
-    # compile dans le depot, sinon Documents\HyStudio\projets
-    candidates = [os.path.join(APP_DIR, "projets")]
+    # compile dans le depot, sinon Documents\HyStudio\projects
+    candidates = [os.path.join(APP_DIR, "projects")]
     if REPO:
-        candidates.append(os.path.join(REPO, "hystudio", "projets"))
-    PROJECTS = next((c for c in candidates if os.path.isdir(c)), os.path.join(USER_HOME, "projets"))
+        candidates.append(os.path.join(REPO, "hystudio", "projects"))
+    PROJECTS = next((c for c in candidates if os.path.isdir(c)), os.path.join(USER_HOME, "projects"))
 else:
     CACHE = os.path.join(SOURCES, "cache")
     USER_HOME = REPO or SOURCES
-    PROJECTS = os.path.join(SOURCES, "projets")
+    PROJECTS = os.path.join(SOURCES, "projects")
 
 WORK = os.path.join(CACHE, "travail")
 RENDERER = os.path.join(RESOURCES, "blender", "render_project.py")
